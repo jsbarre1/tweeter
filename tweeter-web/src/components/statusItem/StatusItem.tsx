@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AuthToken, FakeData, Status, User } from "tweeter-shared";
-import { UserInfoActionsContext, UserInfoContext } from "../userInfo/UserInfoContexts";
 
 import Post from "./Post";
 import { useMessageActions } from "../toaster/MessageHooks";
+import { useUserInfo, useUserInfoActions } from "../userInfo/UserInfoHooks";
 
 export default function StatusItem({
   items,
@@ -16,10 +16,9 @@ export default function StatusItem({
   const navigate = useNavigate();
   const { displayErrorMessage } = useMessageActions()
 
-  const { setDisplayedUser } = useContext(UserInfoActionsContext);
+  const { setDisplayedUser } = useUserInfoActions()
   const { displayedUser: displayedUserAliasParam } = useParams();
-  const { displayedUser, authToken } = useContext(UserInfoContext);
-
+  const { displayedUser, authToken } =useUserInfo()
   // Update the displayed user context variable whenever the displayedUser url parameter changes. This allows browser forward and back buttons to work correctly.
   useEffect(() => {
     if (
