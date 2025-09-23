@@ -49,7 +49,7 @@ const Toaster = ({ position }: Props) => {
             className={toast.bootstrapClasses}
             autohide={false}
             show={true}
-            onClose={() => deleteToast(toast.id)}
+            onClose={() => deleteMessage(toast.id)}
           >
             <Toast.Header>
               <img
