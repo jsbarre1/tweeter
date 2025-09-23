@@ -11,7 +11,7 @@ export default function StatusItem({
   featurePath,
 }: {
   items: Status[];
-  featurePath: "/feed" | "/story";
+  featurePath: string;
 }) {
   const navigate = useNavigate();
   const { displayToast } = useContext(ToastActionsContext);

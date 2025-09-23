@@ -1,6 +1,9 @@
 import { useContext } from "react";
-import { UserInfoContext } from "../userInfo/UserInfoContexts";
-import { AuthToken, FakeData, Status } from "tweeter-shared";
+import {
+  UserInfoContext,
+  
+} from "../userInfo/UserInfoContexts";
+import { AuthToken, FakeData, Status} from "tweeter-shared";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ToastActionsContext } from "../toaster/ToastContexts";
@@ -8,17 +11,27 @@ import { ToastType } from "../toaster/Toast";
 import StatusItem from "../statusItem/StatusItem";
 
 export const PAGE_SIZE = 10;
-
-const StoryScroller = () => {
-  const { displayToast } = useContext(ToastActionsContext);
+interface Props {
+    itemDescription: string;
+    featureUrl: string;
+    loadMore: (
+      authToken: AuthToken,
+      userAlias: string,
+      pageSize: number,
+      lastItem: Status | null
+    ) => Promise<[Status[], boolean]>;
+  }
+const StatusItemScroller = (props: Props) => {
   const [items, setItems] = useState<Status[]>([]);
   const [hasMoreItems, setHasMoreItems] = useState(true);
   const [lastItem, setLastItem] = useState<Status | null>(null);
+  const { displayToast } = useContext(ToastActionsContext);
 
   const addItems = (newItems: Status[]) =>
     setItems((previousItems) => [...previousItems, ...newItems]);
 
   const { displayedUser, authToken } = useContext(UserInfoContext);
+
 
   // Initialize the component whenever the displayed user changes
   useEffect(() => {
@@ -34,7 +47,7 @@ const StoryScroller = () => {
 
   const loadMoreItems = async (lastItem: Status | null) => {
     try {
-      const [newItems, hasMore] = await loadMoreStoryItems(
+      const [newItems, hasMore] = await props.loadMore(
         authToken!,
         displayedUser!.alias,
         PAGE_SIZE,
@@ -47,21 +60,12 @@ const StoryScroller = () => {
     } catch (error) {
       displayToast(
         ToastType.Error,
-        `Failed to load story items because of exception: ${error}`,
+        `Failed to load ${props.itemDescription} items because of exception: ${error}`,
         0
       );
     }
   };
 
-  const loadMoreStoryItems = async (
-    authToken: AuthToken,
-    userAlias: string,
-    pageSize: number,
-    lastItem: Status | null
-  ): Promise<[Status[], boolean]> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
-  };
 
   return (
     <div className="container px-0 overflow-visible vh-100">
@@ -72,10 +76,11 @@ const StoryScroller = () => {
         hasMore={hasMoreItems}
         loader={<h4>Loading...</h4>}
       >
-        <StatusItem items={items} featurePath="/story" />
+        <StatusItem items={items} featurePath={props.featureUrl}/>
+       
       </InfiniteScroll>
     </div>
   );
 };
 
-export default StoryScroller;
+export default StatusItemScroller;
