@@ -1,14 +1,12 @@
 import { useContext } from "react";
-import {
-  UserInfoContext,
-  
-} from "../userInfo/UserInfoContexts";
-import { AuthToken, FakeData, Status} from "tweeter-shared";
+import { UserInfoContext } from "../userInfo/UserInfoContexts";
+import { AuthToken, FakeData, Status } from "tweeter-shared";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ToastActionsContext } from "../toaster/ToastContexts";
 import { ToastType } from "../toaster/Toast";
 import StatusItem from "../statusItem/StatusItem";
+import { useMessageActions } from "../toaster/MessageHooks";
 
 export const PAGE_SIZE = 10;
 
@@ -16,13 +14,11 @@ const FeedScroller = () => {
   const [items, setItems] = useState<Status[]>([]);
   const [hasMoreItems, setHasMoreItems] = useState(true);
   const [lastItem, setLastItem] = useState<Status | null>(null);
-  const { displayToast } = useContext(ToastActionsContext);
-
+  const { displayErrorMessage } = useMessageActions();
   const addItems = (newItems: Status[]) =>
     setItems((previousItems) => [...previousItems, ...newItems]);
 
   const { displayedUser, authToken } = useContext(UserInfoContext);
-
 
   // Initialize the component whenever the displayed user changes
   useEffect(() => {
@@ -49,10 +45,8 @@ const FeedScroller = () => {
       setLastItem(() => newItems[newItems.length - 1]);
       addItems(newItems);
     } catch (error) {
-      displayToast(
-        ToastType.Error,
+      displayErrorMessage(
         `Failed to load feed items because of exception: ${error}`,
-        0
       );
     }
   };
@@ -67,10 +61,6 @@ const FeedScroller = () => {
     return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
   };
 
-
-
-
-
   return (
     <div className="container px-0 overflow-visible vh-100">
       <InfiniteScroll
@@ -80,8 +70,7 @@ const FeedScroller = () => {
         hasMore={hasMoreItems}
         loader={<h4>Loading...</h4>}
       >
-        <StatusItem items={items} featurePath="/feed"/>
-       
+        <StatusItem items={items} featurePath="/feed" />
       </InfiniteScroll>
     </div>
   );
