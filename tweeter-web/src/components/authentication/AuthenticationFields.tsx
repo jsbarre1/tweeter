@@ -14,7 +14,7 @@ export default function AuthenticationFields({
 
   return (
     <>
-      <div>
+      <div className="form-floating">
         <input
           type="text"
           className="form-control"

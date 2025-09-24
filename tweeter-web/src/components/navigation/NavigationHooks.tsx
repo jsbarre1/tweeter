@@ -44,7 +44,6 @@ export const useUserNavigation = () => {
     };
 
     return {
-        navigateToUser,
-        getUser
+        navigateToUser
     };
 };

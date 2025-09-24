@@ -13,25 +13,9 @@ export default function StatusItem({
   items: Status[];
   featurePath: string;
 }) {
-  const {getUser, navigateToUser} = useUserNavigation()
+  const { navigateToUser} = useUserNavigation()
 
-  const { setDisplayedUser } = useUserInfoActions()
-  const { displayedUser: displayedUserAliasParam } = useParams();
-  const { displayedUser, authToken } =useUserInfo()
-  // Update the displayed user context variable whenever the displayedUser url parameter changes. This allows browser forward and back buttons to work correctly.
-  useEffect(() => {
-    if (
-      authToken &&
-      displayedUserAliasParam &&
-      displayedUserAliasParam != displayedUser!.alias
-    ) {
-      getUser(authToken!, displayedUserAliasParam!).then((toUser) => {
-        if (toUser) {
-          setDisplayedUser(toUser);
-        }
-      });
-    }
-  }, [displayedUserAliasParam]);
+
 
 
   return (
