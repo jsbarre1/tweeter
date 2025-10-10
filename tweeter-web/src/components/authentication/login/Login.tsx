@@ -35,32 +35,16 @@ const Login = (props: Props) => {
 
   const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key == "Enter" && !presenterRef.current!.checkSubmitButtonStatus()) {
-      doLogin();
+      presenterRef.current!.doLogin();
     }
-  };
-
-  const doLogin = async () => {
-    await presenterRef.current!.doLogin();
-  };
-
-  const setAlias = (value: string) => {
-    presenterRef.current!.setAlias(value);
-  };
-
-  const setPassword = (value: string) => {
-    presenterRef.current!.setPassword(value);
-  };
-
-  const setRememberMe = (value: boolean) => {
-    presenterRef.current!.setRememberMe(value);
   };
 
   const inputFieldFactory = () => {
     return (
       <AuthenticationFields
         handleRegisterOrLogin={loginOnEnter}
-        setAlias={setAlias}
-        setPassword={setPassword}
+        setAlias={presenterRef.current!.setAlias}
+        setPassword={presenterRef.current!.setPassword}
       />
     );
   };
@@ -80,10 +64,10 @@ const Login = (props: Props) => {
       oAuthHeading="Sign in with:"
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
-      setRememberMe={setRememberMe}
-      submitButtonDisabled={() => isButtonDisabled}
+      setRememberMe={presenterRef.current!.setRememberMe}
+      submitButtonDisabled={isButtonDisabled}
       isLoading={isLoading}
-      submit={doLogin}
+      submit={presenterRef.current!.doLogin}
     />
   );
 };
