@@ -9,7 +9,8 @@ export interface LoginView {
     remember: boolean
   ) => void;
   navigateToPath: (path: string) => void;
-  setIsLoading: (isLoading:boolean) => void
+  setIsLoading: (isLoading: boolean) => void;
+  setIsButtonDisabled: (isDisabled: boolean) => void;
 }
 export class LoginPresenter {
   private _alias = "";
@@ -22,15 +23,22 @@ export class LoginPresenter {
     this.originalUrl = originalUrl;
   }
 
+  private updateButtonStatus(): void {
+    const isDisabled = this._alias === "" || this._password === "";
+    this.view.setIsButtonDisabled(isDisabled);
+  }
+
   public checkSubmitButtonStatus = (): boolean => {
-    return this._alias == "" || this._password == "";
+    return this._alias === "" || this._password === "";
   };
 
   public setAlias(value: string) {
     this._alias = value;
+    this.updateButtonStatus();
   }
   public setPassword(value: string) {
     this._password = value;
+    this.updateButtonStatus();
   }
   public setRememberMe(value: boolean) {
     this._rememberMe = value;
@@ -38,7 +46,7 @@ export class LoginPresenter {
 
   public async doLogin() {
     try {
-      this.view.setIsLoading(true)
+      this.view.setIsLoading(true);
 
       const [user, authToken] = await this.login(this._alias, this._password);
 
@@ -54,7 +62,7 @@ export class LoginPresenter {
         `Failed to log user in because of exception: ${error}`
       );
     } finally {
-      this.view.setIsLoading(false)
+      this.view.setIsLoading(false);
     }
   }
 

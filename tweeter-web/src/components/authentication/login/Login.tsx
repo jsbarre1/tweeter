@@ -25,6 +25,7 @@ const Login = (props: Props) => {
     updateUserInfo: updateUserInfo,
     navigateToPath: (path) => navigate(path),
     setIsLoading: setIsLoading,
+    setIsButtonDisabled: setIsButtonDisabled,
   };
 
   const presenterRef = useRef<LoginPresenter | null>(null);
@@ -44,12 +45,10 @@ const Login = (props: Props) => {
 
   const setAlias = (value: string) => {
     presenterRef.current!.setAlias(value);
-    setIsButtonDisabled(presenterRef.current!.checkSubmitButtonStatus());
   };
 
   const setPassword = (value: string) => {
     presenterRef.current!.setPassword(value);
-    setIsButtonDisabled(presenterRef.current!.checkSubmitButtonStatus());
   };
 
   const setRememberMe = (value: boolean) => {
@@ -82,7 +81,7 @@ const Login = (props: Props) => {
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
       setRememberMe={setRememberMe}
-      submitButtonDisabled={()=>isButtonDisabled}
+      submitButtonDisabled={() => isButtonDisabled}
       isLoading={isLoading}
       submit={doLogin}
     />
