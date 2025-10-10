@@ -8,7 +8,6 @@ import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../userInfo/UserInfoHooks";
 import { FolloweePresenter, FolloweeView } from "../../presenter/FolloweePresenter";
 
-export const PAGE_SIZE = 10;
 interface Props {
   itemDescription: string;
   featureUrl: string;
@@ -23,8 +22,6 @@ interface Props {
 const UserItemScroller = (props: Props) => {
   const { displayErrorMessage } = useMessageActions();
   const [items, setItems] = useState<User[]>([]);
-  const [hasMoreItems, setHasMoreItems] = useState(true);
-  const [lastItem, setLastItem] = useState<User | null>(null);
 
   const addItems = (newItems: User[]) =>
     setItems((previousItems) => [...previousItems, ...newItems]);
@@ -89,8 +86,7 @@ const UserItemScroller = (props: Props) => {
     authToken: AuthToken,
     alias: string
   ): Promise<User | null> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.findUserByAlias(alias);
+    return presenter.getUser(authToken, alias)
   };
 
   return (
