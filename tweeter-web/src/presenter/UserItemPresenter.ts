@@ -14,7 +14,7 @@ export abstract class UserItemPresenter {
   private _view: UserItemView;
   protected constructor(view: UserItemView) {
     this._view = view;
-    this.userService = new UserService
+    this.userService = new UserService()
   }
 
   protected get view() {
@@ -44,5 +44,5 @@ export abstract class UserItemPresenter {
     this.hasMoreItems = true;
   }
 
-  public abstract loadMoreItems(authToken: AuthToken, userAlias: string): void;
+  public abstract loadMoreItems(authToken: AuthToken, userAlias: string): Promise<void>;
 }

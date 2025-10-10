@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { AuthToken, FakeData, Status, User } from "tweeter-shared";
+import { Link } from "react-router-dom";
+import { Status } from "tweeter-shared";
 
 import Post from "./Post";
-import { useUserInfo, useUserInfoActions } from "../userInfo/UserInfoHooks";
 import { useUserNavigation } from "../navigation/NavigationHooks";
 
 export default function StatusItem({
@@ -14,9 +12,6 @@ export default function StatusItem({
   featurePath: string;
 }) {
   const { navigateToUser} = useUserNavigation()
-
-
-
 
   return (
     <>
