@@ -3,15 +3,12 @@ import React, { useState } from "react";
 export default function AuthenticationFields({
   handleRegisterOrLogin,
   setAlias,
-  setPassword
+  setPassword,
 }: {
-  handleRegisterOrLogin: (
-    event: React.KeyboardEvent<HTMLElement>,
-  ) => void;
-  setAlias: React.Dispatch<React.SetStateAction<string>>
-  setPassword: React.Dispatch<React.SetStateAction<string>>
+  handleRegisterOrLogin: (event: React.KeyboardEvent<HTMLElement>) => void;
+  setAlias: (value: string) => void;
+  setPassword: (value: string) => void;
 }) {
-
   return (
     <>
       <div className="form-floating">

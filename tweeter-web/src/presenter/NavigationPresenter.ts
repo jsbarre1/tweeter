@@ -17,7 +17,7 @@ export class NavigationPresenter {
     this.userService = new UserService();
   }
   
-  async navigateToUser(
+  public async navigateToUser(
     authToken: AuthToken,
     currentUser: User,
     alias: string,
