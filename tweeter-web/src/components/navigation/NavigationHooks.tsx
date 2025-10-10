@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useUserInfo, useUserInfoActions } from "../userInfo/UserInfoHooks";
 import { useMessageActions } from "../toaster/MessageHooks";
-import { AuthToken, FakeData, User } from "tweeter-shared";
+import { NavigationPresenter, NavigationView } from "../../presenter/NavigationPresenter";
+import { useRef } from "react";
 
 export const useUserNavigation = () => {
     const { displayedUser, authToken } = useUserInfo()
@@ -14,33 +15,20 @@ export const useUserNavigation = () => {
         return value.substring(index);
     };
 
-    const getUser = async (
-        authToken: AuthToken,
-        alias: string
-    ): Promise<User | null> => {
-        // TODO: Replace with the result of calling server
-        return FakeData.instance.findUserByAlias(alias);
-    };
+    const view: NavigationView = {
+        setDisplayedUser,
+        navigateToPath:(path:string)=> navigate(path),
+        displayErrorMessage
+    }
+        const presenterRef = useRef<NavigationPresenter | null>(null);
+    if (!presenterRef.current) {
+        presenterRef.current = new NavigationPresenter(view);
+    }
 
     const navigateToUser = async (event: React.MouseEvent, featurePath: string): Promise<void> => {
         event.preventDefault();
-
-        try {
-            const alias = extractAlias(event.target.toString());
-
-            const toUser = await getUser(authToken!, alias);
-
-            if (toUser) {
-                if (!toUser.equals(displayedUser!)) {
-                    setDisplayedUser(toUser);
-                    navigate(`${featurePath}/${toUser.alias}`);
-                }
-            }
-        } catch (error) {
-            displayErrorMessage(
-                `Failed to get user because of exception: ${error}`
-            );
-        }
+        const alias = extractAlias(event.target.toString());
+        await presenterRef.current!.navigateToUser(authToken!, displayedUser!, alias, featurePath)
     };
 
     return {
