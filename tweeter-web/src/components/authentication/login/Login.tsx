@@ -18,6 +18,7 @@ const Login = (props: Props) => {
   const { updateUserInfo } = useUserInfoActions();
   const { displayErrorMessage } = useMessageActions();
   const [isLoading, setIsLoading] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const observer: LoginView = {
     displayErrorMessage: displayErrorMessage,
@@ -41,16 +42,14 @@ const Login = (props: Props) => {
     await presenterRef.current!.doLogin();
   };
 
-  const checkSubmitButtonStatus = (): boolean => {
-    return presenterRef.current!.checkSubmitButtonStatus();
-  };
-
   const setAlias = (value: string) => {
     presenterRef.current!.setAlias(value);
+    setIsButtonDisabled(presenterRef.current!.checkSubmitButtonStatus());
   };
 
   const setPassword = (value: string) => {
     presenterRef.current!.setPassword(value);
+    setIsButtonDisabled(presenterRef.current!.checkSubmitButtonStatus());
   };
 
   const setRememberMe = (value: boolean) => {
@@ -83,7 +82,7 @@ const Login = (props: Props) => {
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
       setRememberMe={setRememberMe}
-      submitButtonDisabled={checkSubmitButtonStatus}
+      submitButtonDisabled={()=>isButtonDisabled}
       isLoading={isLoading}
       submit={doLogin}
     />

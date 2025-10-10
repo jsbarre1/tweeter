@@ -23,7 +23,7 @@ export class LoginPresenter {
   }
 
   public checkSubmitButtonStatus = (): boolean => {
-    return !this._alias || !this._password;
+    return this._alias == "" || this._password == "";
   };
 
   public setAlias(value: string) {
