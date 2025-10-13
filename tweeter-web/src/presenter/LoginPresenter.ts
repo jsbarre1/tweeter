@@ -32,19 +32,19 @@ export class LoginPresenter {
     return this._alias === "" || this._password === "";
   };
 
-  public setAlias(value: string) {
+  public setAlias = (value: string) => {
     this._alias = value;
     this.updateButtonStatus();
   }
-  public setPassword(value: string) {
+  public setPassword = (value: string) => {
     this._password = value;
     this.updateButtonStatus();
   }
-  public setRememberMe(value: boolean) {
+  public setRememberMe = (value: boolean) => {
     this._rememberMe = value;
   }
 
-  public async doLogin() {
+  public doLogin = async () => {
     try {
       this.view.setIsLoading(true);
 

@@ -65,8 +65,8 @@ const Login = (props: Props) => {
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
       setRememberMe={presenterRef.current!.setRememberMe}
-      submitButtonDisabled={isButtonDisabled}
-      isLoading={isLoading}
+      submitButtonDisabled={()=>isButtonDisabled}
+      isLoading={()=>isLoading}
       submit={presenterRef.current!.doLogin}
     />
   );
