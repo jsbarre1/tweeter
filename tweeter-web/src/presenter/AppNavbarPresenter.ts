@@ -20,6 +20,7 @@ export class AppNavbarPresenter {
 
   public async logOut(authToken: AuthToken): Promise<void> {
     const loggingOutToastId = this.view.displayInfoMessage("Logging Out...", 0);
+    await this.userService.logout(authToken)
 
     try {
       await this.userService.logout(authToken);
