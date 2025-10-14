@@ -1,5 +1,6 @@
 import { User, AuthToken, FakeData } from "tweeter-shared";
 import { Buffer } from "buffer";
+import { UserService } from "../model.service/UserService";
 
 export interface RegisterView {
   displayErrorMessage: (message: string) => void;
@@ -25,9 +26,11 @@ export class RegisterPresenter {
   private _imageFileExtension = "";
   private _rememberMe = false;
   private view: RegisterView;
+  private userService;
 
   public constructor(view: RegisterView) {
     this.view = view;
+    this.userService = new UserService()
   }
 
   private updateButtonStatus(): void {
@@ -123,7 +126,7 @@ export class RegisterPresenter {
     try {
       this.view.setIsLoading(true);
 
-      const [user, authToken] = await this.register(
+      const [user, authToken] = await this.userService.register(
         this._firstName,
         this._lastName,
         this._alias,
@@ -143,25 +146,4 @@ export class RegisterPresenter {
     }
   }
 
-  private async register(
-    firstName: string,
-    lastName: string,
-    alias: string,
-    password: string,
-    userImageBytes: Uint8Array,
-    imageFileExtension: string
-  ): Promise<[User, AuthToken]> {
-    // Not needed now, but will be needed when you make the request to the server in milestone 3
-    const imageStringBase64: string =
-      Buffer.from(userImageBytes).toString("base64");
-
-    // TODO: Replace with the result of calling the server
-    const user = FakeData.instance.firstUser;
-
-    if (user === null) {
-      throw new Error("Invalid registration");
-    }
-
-    return [user, FakeData.instance.authToken];
-  }
 }
