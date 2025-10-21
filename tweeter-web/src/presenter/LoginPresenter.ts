@@ -26,22 +26,17 @@ export class LoginPresenter extends Presenter<LoginView>{
     this.userService = new UserService();
   }
 
-  private updateButtonStatus(): void {
-    const isDisabled = this._alias === "" || this._password === "";
-    this.view.setIsButtonDisabled(isDisabled);
-  }
-
   public checkSubmitButtonStatus = (): boolean => {
     return this._alias === "" || this._password === "";
   };
 
   public setAlias = (value: string) => {
     this._alias = value;
-    this.updateButtonStatus();
+    this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
   }
   public setPassword = (value: string) => {
     this._password = value;
-    this.updateButtonStatus();
+    this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
   }
   public setRememberMe = (value: boolean) => {
     this._rememberMe = value;

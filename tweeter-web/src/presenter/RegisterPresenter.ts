@@ -32,17 +32,6 @@ export class RegisterPresenter extends Presenter<RegisterView> {
     this.userService = new UserService()
   }
 
-  private updateButtonStatus(): void {
-    const isDisabled =
-      !this._firstName ||
-      !this._lastName ||
-      !this._alias ||
-      !this._password ||
-      !this._imageUrl ||
-      !this._imageFileExtension;
-    this.view.setIsButtonDisabled(isDisabled);
-  }
-
   public checkSubmitButtonStatus = (): boolean => {
     return (
       !this._firstName ||
@@ -56,22 +45,22 @@ export class RegisterPresenter extends Presenter<RegisterView> {
 
   public setFirstName = (value: string) => {
     this._firstName = value;
-    this.updateButtonStatus();
+    this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
   }
 
   public setLastName = (value: string) => {
     this._lastName = value;
-    this.updateButtonStatus();
+    this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
   }
 
   public setAlias = (value: string) => {
     this._alias = value;
-    this.updateButtonStatus();
+    this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
   }
 
   public setPassword = (value: string) => {
     this._password = value;
-    this.updateButtonStatus();
+    this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
   }
 
   public setRememberMe = (value: boolean) => {
@@ -98,7 +87,7 @@ export class RegisterPresenter extends Presenter<RegisterView> {
         );
 
         this._imageBytes = bytes;
-        this.updateButtonStatus();
+        this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
       };
       reader.readAsDataURL(file);
 
@@ -106,14 +95,14 @@ export class RegisterPresenter extends Presenter<RegisterView> {
       const fileExtension = this.getFileExtension(file);
       if (fileExtension) {
         this._imageFileExtension = fileExtension;
-        this.updateButtonStatus();
+        this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
       }
     } else {
       this._imageUrl = "";
       this._imageBytes = new Uint8Array();
       this._imageFileExtension = "";
       this.view.setImageUrl("");
-      this.updateButtonStatus();
+      this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
     }
   }
 

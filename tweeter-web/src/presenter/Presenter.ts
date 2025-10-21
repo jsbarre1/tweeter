@@ -67,4 +67,11 @@ export abstract class Presenter<V extends View> {
       view.setIsLoading(false);
     }
   }
+
+  protected updateButtonStatus(
+    validationCheck: () => boolean,
+    view: { setIsButtonDisabled: (isDisabled: boolean) => void }
+  ): void {
+    view.setIsButtonDisabled(validationCheck());
+  }
 }
