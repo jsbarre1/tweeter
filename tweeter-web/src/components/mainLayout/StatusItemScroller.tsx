@@ -1,4 +1,4 @@
-import { AuthToken, Status } from "tweeter-shared";
+import {  Status } from "tweeter-shared";
 import { useState, useEffect, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import StatusItem from "../statusItem/StatusItem";
@@ -6,12 +6,12 @@ import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo } from "../userInfo/UserInfoHooks";
 import {
   StatusItemPresenter,
-  StatusItemView,
 } from "../../presenter/StatusItemPresenter";
+import { PagedItemView } from "../../presenter/PagedItemPresenter";
 
 interface Props {
   featureUrl: string;
-  presenterFactory: (observer: StatusItemView) => StatusItemPresenter;
+  presenterFactory: (observer: PagedItemView<Status>) => StatusItemPresenter;
 }
 
 const StatusItemScroller = (props: Props) => {
@@ -19,7 +19,7 @@ const StatusItemScroller = (props: Props) => {
   const { displayErrorMessage } = useMessageActions();
 
   const { displayedUser, authToken } = useUserInfo();
-  const observer: StatusItemView = {
+  const observer: PagedItemView<Status> = {
     addItems: (newItems: Status[]) =>
       setItems((previousItems) => [...previousItems, ...newItems]),
     displayErrorMessage: displayErrorMessage,
