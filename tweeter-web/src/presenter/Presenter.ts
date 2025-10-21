@@ -43,4 +43,28 @@ export abstract class Presenter<V extends View> {
       );
     }
   }
+
+  protected async doFollowUnfollowOperation(
+    operation: () => Promise<void>,
+    notify: () => void,
+    operationDescription: string,
+    view: MessageView & { setIsLoading: (isLoading: boolean) => void }
+  ): Promise<void> {
+    let toastId = "";
+    try {
+      view.setIsLoading(true);
+      toastId = view.displayInfoMessage(operationDescription, 0);
+      await operation();
+      notify();
+    } catch (error) {
+      this.view.displayErrorMessage(
+        `Failed to ${operationDescription} because of exception: ${error}`
+      );
+    } finally {
+      if (toastId) {
+        view.deleteMessage(toastId);
+      }
+      view.setIsLoading(false);
+    }
+  }
 }
