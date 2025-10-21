@@ -10,6 +10,7 @@ export const useUserNavigation = () => {
     const navigate = useNavigate();
     const { displayErrorMessage } = useMessageActions()
 
+    // move to presenter
     const extractAlias = (value: string): string => {
         const index = value.indexOf("@");
         return value.substring(index);

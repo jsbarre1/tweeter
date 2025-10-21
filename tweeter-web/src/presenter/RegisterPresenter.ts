@@ -1,9 +1,9 @@
-import { User, AuthToken, FakeData } from "tweeter-shared";
+import { User, AuthToken } from "tweeter-shared";
 import { Buffer } from "buffer";
 import { UserService } from "../model.service/UserService";
+import { Presenter, View } from "./Presenter";
 
-export interface RegisterView {
-  displayErrorMessage: (message: string) => void;
+export interface RegisterView extends View {
   updateUserInfo: (
     currentUser: User,
     displayedUser: User | null,
@@ -16,7 +16,7 @@ export interface RegisterView {
   setImageUrl: (url: string) => void;
 }
 
-export class RegisterPresenter {
+export class RegisterPresenter extends Presenter<RegisterView> {
   private _firstName = "";
   private _lastName = "";
   private _alias = "";
@@ -25,11 +25,10 @@ export class RegisterPresenter {
   private _imageUrl = "";
   private _imageFileExtension = "";
   private _rememberMe = false;
-  private view: RegisterView;
   private userService;
 
   public constructor(view: RegisterView) {
-    this.view = view;
+    super(view);
     this.userService = new UserService()
   }
 

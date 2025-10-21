@@ -1,8 +1,8 @@
-import { User, AuthToken, FakeData } from "tweeter-shared";
+import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
+import { Presenter, View } from "./Presenter";
 
-export interface LoginView {
-  displayErrorMessage: (message: string) => void;
+export interface LoginView extends View {
   updateUserInfo: (
     currentUser: User,
     displayedUser: User | null,
@@ -14,18 +14,16 @@ export interface LoginView {
   setIsButtonDisabled: (isDisabled: boolean) => void;
 
 }
-export class LoginPresenter {
+export class LoginPresenter extends Presenter<LoginView>{
   private _alias = "";
   private _password = "";
   private _rememberMe = false;
-  private view: LoginView;
   private userService;
   private originalUrl: string | undefined = "";
   public constructor(view: LoginView, originalUrl: string | undefined) {
-    this.view = view;
+    super(view);
     this.originalUrl = originalUrl;
     this.userService = new UserService();
-    
   }
 
   private updateButtonStatus(): void {
