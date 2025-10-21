@@ -48,25 +48,27 @@ export class LoginPresenter extends Presenter<LoginView>{
   }
 
   public doLogin = async () => {
-    try {
-      this.view.setIsLoading(true);
+    this.view.setIsLoading(true);
 
-      const [user, authToken] = await this.userService.login(this._alias,this._password)
+    let user: User;
+    let authToken: AuthToken;
 
-      this.view.updateUserInfo(user, user, authToken, this._rememberMe);
+    await this.doAuthenticationOperation(
+      async () => {
+        [user, authToken] = await this.userService.login(this._alias, this._password);
+        this.view.updateUserInfo(user, user, authToken, this._rememberMe);
+      },
+      () => {
+        if (this.originalUrl) {
+          this.view.navigateToPath(this.originalUrl);
+        } else {
+          this.view.navigateToPath(`/feed/${user.alias}`);
+        }
+      },
+      "log user in"
+    );
 
-      if (this.originalUrl) {
-        this.view.navigateToPath(this.originalUrl);
-      } else {
-        this.view.navigateToPath(`/feed/${user.alias}`);
-      }
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to log user in because of exception: ${error}`
-      );
-    } finally {
-      this.view.setIsLoading(false);
-    }
+    this.view.setIsLoading(false);
   }
 
 }

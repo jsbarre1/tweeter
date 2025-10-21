@@ -29,4 +29,18 @@ export abstract class Presenter<V extends View> {
       );
     }
   }
+  protected async doAuthenticationOperation(
+    navigate: () => Promise<void>,
+    notify: () => void,
+    operationDescription: string
+  ) {
+    try {
+      await navigate();
+      notify();
+    } catch (error) {
+      this.view.displayErrorMessage(
+        `Failed to ${operationDescription} because of exception: ${error}`
+      );
+    }
+  }
 }

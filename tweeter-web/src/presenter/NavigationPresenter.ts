@@ -22,18 +22,19 @@ export class NavigationPresenter extends Presenter<NavigationView> {
     alias: string,
     featurePath: string
   ): Promise<void> {
-    try {
-      const user = await this.userService.getUser(authToken, alias);
-      if (user) {
-        if (!user.equals(currentUser)) {
+    let user: User | null;
+
+    await this.doAuthenticationOperation(
+      async () => {
+        user = await this.userService.getUser(authToken, alias);
+      },
+      () => {
+        if (user && !user.equals(currentUser)) {
           this.view.setDisplayedUser(user);
           this.view.navigateToPath(`${featurePath}/${user.alias}`);
         }
-      }
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to get user because of exception: ${error}`
-      );
-    }
+      },
+      "get user"
+    );
   }
 }

@@ -17,18 +17,17 @@ export class AppNavbarPresenter extends Presenter<AppNavbarView> {
 
   public async logOut(authToken: AuthToken): Promise<void> {
     const loggingOutToastId = this.view.displayInfoMessage("Logging Out...", 0);
-    await this.userService.logout(authToken)
 
-    try {
-      await this.userService.logout(authToken);
-
-      this.view.deleteMessage(loggingOutToastId);
-      this.view.clearUserInfo();
-      this.view.navigateToPath("/login");
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to log user out because of exception: ${error}`
-      );
-    }
+    await this.doAuthenticationOperation(
+      async () => {
+        await this.userService.logout(authToken);
+      },
+      () => {
+        this.view.deleteMessage(loggingOutToastId);
+        this.view.clearUserInfo();
+        this.view.navigateToPath("/login");
+      },
+      "log user out"
+    );
   }
 }
