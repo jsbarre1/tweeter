@@ -22,19 +22,12 @@ export class NavigationPresenter extends Presenter<NavigationView> {
     alias: string,
     featurePath: string
   ): Promise<void> {
-    let user: User | null;
-
-    await this.doAuthenticationOperation(
-      async () => {
-        user = await this.userService.getUser(authToken, alias);
-      },
-      () => {
-        if (user && !user.equals(currentUser)) {
-          this.view.setDisplayedUser(user);
-          this.view.navigateToPath(`${featurePath}/${user.alias}`);
-        }
-      },
-      "get user"
-    );
+    await this.doFailureReportingOperation(async () => {
+      const user = await this.userService.getUser(authToken, alias);
+      if (user && !user.equals(currentUser)) {
+        this.view.setDisplayedUser(user);
+        this.view.navigateToPath(`${featurePath}/${user.alias}`);
+      }
+    }, "get user");
   }
 }
