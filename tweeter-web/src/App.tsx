@@ -15,7 +15,6 @@ import StatusItemScroller from "./components/mainLayout/StatusItemScroller";
 import { useUserInfo } from "./components/userInfo/UserInfoHooks";
 import { FolloweePresenter } from "./presenter/FolloweePresenter";
 import { FollowerPresenter } from "./presenter/FollowerPresenter";
-import { StatusService } from "./model.service/StatusService";
 import { FeedPresenter } from "./presenter/FeedPresenter";
 import { StoryPresenter } from "./presenter/StoryPresenter";
 import { PagedItemView } from "./presenter/PagedItemPresenter";
@@ -44,7 +43,6 @@ const App = () => {
 
 const AuthenticatedRoutes = () => {
   const { displayedUser } = useUserInfo();
-  const tempService = new StatusService();
 
   return (
     <Routes>
@@ -55,11 +53,21 @@ const AuthenticatedRoutes = () => {
         />
         <Route
           path="feed/:displayedUser"
-          element={<StatusItemScroller featureUrl="/feed"  presenterFactory={(view: PagedItemView<Status>)=> new FeedPresenter(view)} />}
+          element={
+            <StatusItemScroller
+              featureUrl="/feed"
+              presenterFactory={(view: PagedItemView<Status>) => new FeedPresenter(view)}
+            />
+          }
         />
         <Route
           path="story/:displayedUser"
-          element={<StatusItemScroller featureUrl="/story" presenterFactory={(view: PagedItemView<Status>)=> new StoryPresenter(view)} />}
+          element={
+            <StatusItemScroller
+              featureUrl="/story"
+              presenterFactory={(view: PagedItemView<Status>) => new StoryPresenter(view)}
+            />
+          }
         />
         <Route
           path="followees/:displayedUser"
@@ -67,9 +75,7 @@ const AuthenticatedRoutes = () => {
             <UserItemScroller
               key={`followees-${displayedUser?.alias}`}
               featureUrl="/followees"
-              presenterFactory={(view: PagedItemView<User>) =>
-                new FolloweePresenter(view)
-              }
+              presenterFactory={(view: PagedItemView<User>) => new FolloweePresenter(view)}
             />
           }
         />
@@ -79,9 +85,7 @@ const AuthenticatedRoutes = () => {
             <UserItemScroller
               key={`followers-${displayedUser?.alias}`}
               featureUrl="/followers"
-              presenterFactory={(view: PagedItemView<User>) =>
-                new FollowerPresenter(view)
-              }
+              presenterFactory={(view: PagedItemView<User>) => new FollowerPresenter(view)}
             />
           }
         />
