@@ -111,8 +111,6 @@ export class RegisterPresenter extends Presenter<RegisterView> {
   }
 
   public doRegister = async () => {
-    this.view.setIsLoading(true);
-
     let user: User;
     let authToken: AuthToken;
 
@@ -131,10 +129,9 @@ export class RegisterPresenter extends Presenter<RegisterView> {
       () => {
         this.view.navigateToPath(`/feed/${user.alias}`);
       },
-      "register user"
+      "register user",
+      this.view
     );
-
-    this.view.setIsLoading(false);
   }
 
 }

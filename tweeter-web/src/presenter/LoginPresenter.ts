@@ -43,8 +43,6 @@ export class LoginPresenter extends Presenter<LoginView>{
   }
 
   public doLogin = async () => {
-    this.view.setIsLoading(true);
-
     let user: User;
     let authToken: AuthToken;
 
@@ -60,10 +58,9 @@ export class LoginPresenter extends Presenter<LoginView>{
           this.view.navigateToPath(`/feed/${user.alias}`);
         }
       },
-      "log user in"
+      "log user in",
+      this.view
     );
-
-    this.view.setIsLoading(false);
   }
 
 }
