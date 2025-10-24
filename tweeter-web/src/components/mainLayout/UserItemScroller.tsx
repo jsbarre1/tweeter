@@ -18,7 +18,6 @@ const UserItemScroller = (props: Props) => {
   const { setDisplayedUser } = useUserInfoActions();
   const { displayedUser: displayedUserAliasParam } = useParams();
 
-  // We need a ref to the presenter for URL param handling
   const presenterRef = useRef<UserItemPresenter | null>(null);
 
   // Update the displayed user context variable whenever the displayedUser url parameter changes.

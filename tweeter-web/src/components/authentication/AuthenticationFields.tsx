@@ -17,6 +17,7 @@ export default function AuthenticationFields({
           className="form-control"
           size={50}
           id="aliasInput"
+          aria-label="alias"
           placeholder="name@example.com"
           onKeyDown={handleRegisterOrLogin}
           onChange={(event) => setAlias(event.target.value)}
@@ -29,6 +30,7 @@ export default function AuthenticationFields({
           className="form-control"
           id="passwordInput"
           placeholder="Password"
+          aria-label="password"
           onKeyDown={handleRegisterOrLogin}
           onChange={(event) => setPassword(event.target.value)}
         />

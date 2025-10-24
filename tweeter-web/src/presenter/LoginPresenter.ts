@@ -11,13 +11,8 @@ export interface LoginView extends View {
   ) => void;
   navigateToPath: (path: string) => void;
   setIsLoading: (isLoading: boolean) => void;
-  setIsButtonDisabled: (isDisabled: boolean) => void;
-
 }
 export class LoginPresenter extends Presenter<LoginView>{
-  private _alias = "";
-  private _password = "";
-  private _rememberMe = false;
   private userService;
   private originalUrl: string | undefined = "";
   public constructor(view: LoginView, originalUrl: string | undefined) {
@@ -26,30 +21,14 @@ export class LoginPresenter extends Presenter<LoginView>{
     this.userService = new UserService();
   }
 
-  public checkSubmitButtonStatus = (): boolean => {
-    return this._alias === "" || this._password === "";
-  };
-
-  public setAlias = (value: string) => {
-    this._alias = value;
-    this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
-  }
-  public setPassword = (value: string) => {
-    this._password = value;
-    this.updateButtonStatus(this.checkSubmitButtonStatus, this.view);
-  }
-  public setRememberMe = (value: boolean) => {
-    this._rememberMe = value;
-  }
-
-  public doLogin = async () => {
+  public doLogin = async (alias: string, password: string, rememberMe: boolean) => {
     let user: User;
     let authToken: AuthToken;
 
     await this.doAuthenticationOperation(
       async () => {
-        [user, authToken] = await this.userService.login(this._alias, this._password);
-        this.view.updateUserInfo(user, user, authToken, this._rememberMe);
+        [user, authToken] = await this.userService.login(alias, password);
+        this.view.updateUserInfo(user, user, authToken, rememberMe);
       },
       () => {
         if (this.originalUrl) {

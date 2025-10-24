@@ -11,6 +11,7 @@ import { useRef, useState } from "react";
 
 interface Props {
   originalUrl?: string;
+  presenter?: LoginPresenter
 }
 
 const Login = (props: Props) => {
@@ -18,24 +19,45 @@ const Login = (props: Props) => {
   const { updateUserInfo } = useUserInfoActions();
   const { displayErrorMessage } = useMessageActions();
   const [isLoading, setIsLoading] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [alias, setAlias] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const checkButtonDisabled = () => {
+    return alias === "" || password === "";
+  };
 
   const observer: LoginView = {
     displayErrorMessage: displayErrorMessage,
     updateUserInfo: updateUserInfo,
     navigateToPath: (path) => navigate(path),
     setIsLoading: setIsLoading,
-    setIsButtonDisabled: setIsButtonDisabled,
   };
 
   const presenterRef = useRef<LoginPresenter | null>(null);
   if (!presenterRef.current) {
-    presenterRef.current = new LoginPresenter(observer, props.originalUrl);
+    presenterRef.current = props.presenter  ?? new LoginPresenter(observer, props.originalUrl);
   }
 
+  const handleAliasChange = (value: string) => {
+    setAlias(value);
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+  };
+
+  const handleRememberMeChange = (value: boolean) => {
+    setRememberMe(value);
+  };
+
+  const handleLogin = () => {
+    presenterRef.current!.doLogin(alias, password, rememberMe);
+  };
+
   const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key == "Enter" && !presenterRef.current!.checkSubmitButtonStatus()) {
-      presenterRef.current!.doLogin();
+    if (event.key == "Enter" && !checkButtonDisabled()) {
+      handleLogin();
     }
   };
 
@@ -43,8 +65,8 @@ const Login = (props: Props) => {
     return (
       <AuthenticationFields
         handleRegisterOrLogin={loginOnEnter}
-        setAlias={presenterRef.current!.setAlias}
-        setPassword={presenterRef.current!.setPassword}
+        setAlias={handleAliasChange}
+        setPassword={handlePasswordChange}
       />
     );
   };
@@ -64,10 +86,10 @@ const Login = (props: Props) => {
       oAuthHeading="Sign in with:"
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
-      setRememberMe={presenterRef.current!.setRememberMe}
-      submitButtonDisabled={()=>isButtonDisabled}
+      setRememberMe={handleRememberMeChange}
+      submitButtonDisabled={checkButtonDisabled}
       isLoading={()=>isLoading}
-      submit={presenterRef.current!.doLogin}
+      submit={handleLogin}
     />
   );
 };
