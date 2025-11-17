@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "compile": "npm run clean && tsc",
+    "clean": "rimraf dist"
   },
   "keywords": [],
   "author": "",
