@@ -40,6 +40,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-Login
+      Description: Authenticates a user with username and password, returns user profile and auth token
       CodeUri: dist/
       Handler: lambda/LoginLambda.handler
       Events:
@@ -54,6 +55,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-Logout
+      Description: Logs out a user by invalidating their authentication token
       CodeUri: dist/
       Handler: lambda/LogoutLambda.handler
       Events:
@@ -68,6 +70,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-Register
+      Description: Registers a new user account with username, password, and profile information
       CodeUri: dist/
       Handler: lambda/RegisterLambda.handler
       Events:
@@ -84,6 +87,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-GetUser
+      Description: Retrieves user profile information by username or alias
       CodeUri: dist/
       Handler: lambda/GetUserLambda.handler
       Events:
@@ -98,6 +102,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-Follow
+      Description: Creates a follow relationship between the authenticated user and a target user
       CodeUri: dist/
       Handler: lambda/FollowLambda.handler
       Events:
@@ -112,6 +117,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-Unfollow
+      Description: Removes a follow relationship between the authenticated user and a target user
       CodeUri: dist/
       Handler: lambda/UnfollowLambda.handler
       Events:
@@ -126,6 +132,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-GetFollowers
+      Description: Retrieves a paginated list of users who follow the specified user
       CodeUri: dist/
       Handler: lambda/GetFollowersLambda.handler
       Events:
@@ -140,6 +147,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-GetFollowees
+      Description: Retrieves a paginated list of users that the specified user follows
       CodeUri: dist/
       Handler: lambda/GetFolloweesLambda.handler
       Events:
@@ -154,6 +162,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-GetFollowerCount
+      Description: Returns the total number of followers for the specified user
       CodeUri: dist/
       Handler: lambda/GetFollowerCountLambda.handler
       Events:
@@ -168,6 +177,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-GetFolloweeCount
+      Description: Returns the total number of users that the specified user follows
       CodeUri: dist/
       Handler: lambda/GetFolloweeCountLambda.handler
       Events:
@@ -182,6 +192,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-GetIsFollowerStatus
+      Description: Checks whether the authenticated user is currently following a specified user
       CodeUri: dist/
       Handler: lambda/GetIsFollowerStatusLambda.handler
       Events:
@@ -197,6 +208,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-PostStatus
+      Description: Posts a new status update from the authenticated user
       CodeUri: dist/
       Handler: lambda/PostStatusLambda.handler
       Events:
@@ -211,6 +223,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-GetFeed
+      Description: Retrieves a paginated feed of status updates from users that the authenticated user follows
       CodeUri: dist/
       Handler: lambda/GetFeedLambda.handler
       Events:
@@ -225,6 +238,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: tweeter-GetStory
+      Description: Retrieves a paginated list of status updates posted by the specified user
       CodeUri: dist/
       Handler: lambda/GetStoryLambda.handler
       Events:
