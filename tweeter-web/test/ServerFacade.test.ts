@@ -1,5 +1,5 @@
 import "isomorphic-fetch";
-import { ServerFacade } from "../network/ServerFacade";
+import { ServerFacade } from "../src/network/ServerFacade";
 import { AuthToken, User } from "tweeter-shared";
 
 describe("ServerFacade Integration Tests", () => {

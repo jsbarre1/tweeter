@@ -1,5 +1,5 @@
 import "isomorphic-fetch";
-import { StatusService } from "../model.service/StatusService";
+import { StatusService } from "../src/model.service/StatusService";
 import { AuthToken, Status } from "tweeter-shared";
 
 describe("StatusService Integration Tests", () => {
