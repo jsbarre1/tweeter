@@ -1,0 +1,2 @@
+# Ignore node_modules in layer (will be copied from root)
+nodejs/node_modules/
