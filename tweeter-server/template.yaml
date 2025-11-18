@@ -1,0 +1,253 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Tweeter Application - Serverless API
+
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 30
+    MemorySize: 512
+    Environment:
+      Variables:
+        NODE_ENV: production
+    Layers:
+      - !Ref DependenciesLayer
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+      AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+      AllowOrigin: "'*'"
+
+Resources:
+  DependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: tweeter-dependencies
+      Description: Dependencies for Tweeter Lambda functions
+      ContentUri: layer/
+      CompatibleRuntimes:
+        - nodejs20.x
+      RetentionPolicy: Retain
+
+  TweeterApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Name: tweeter-api
+      Description: Tweeter REST API
+
+  LoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-Login
+      CodeUri: dist/
+      Handler: lambda/LoginLambda.handler
+      Events:
+        LoginApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /login
+            Method: POST
+
+  LogoutFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-Logout
+      CodeUri: dist/
+      Handler: lambda/LogoutLambda.handler
+      Events:
+        LogoutApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /logout
+            Method: POST
+
+  RegisterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-Register
+      CodeUri: dist/
+      Handler: lambda/RegisterLambda.handler
+      Events:
+        RegisterApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /register
+            Method: POST
+
+
+
+  GetUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-GetUser
+      CodeUri: dist/
+      Handler: lambda/GetUserLambda.handler
+      Events:
+        GetUserApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /user
+            Method: POST
+
+  FollowFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-Follow
+      CodeUri: dist/
+      Handler: lambda/FollowLambda.handler
+      Events:
+        FollowApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /follow
+            Method: POST
+
+  UnfollowFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-Unfollow
+      CodeUri: dist/
+      Handler: lambda/UnfollowLambda.handler
+      Events:
+        UnfollowApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /unfollow
+            Method: POST
+
+  GetFollowersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-GetFollowers
+      CodeUri: dist/
+      Handler: lambda/GetFollowersLambda.handler
+      Events:
+        GetFollowersApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /followers
+            Method: POST
+
+  GetFolloweesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-GetFollowees
+      CodeUri: dist/
+      Handler: lambda/GetFolloweesLambda.handler
+      Events:
+        GetFolloweesApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /followees
+            Method: POST
+
+  GetFollowerCountFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-GetFollowerCount
+      CodeUri: dist/
+      Handler: lambda/GetFollowerCountLambda.handler
+      Events:
+        GetFollowerCountApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /follower-count
+            Method: POST
+
+  GetFolloweeCountFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-GetFolloweeCount
+      CodeUri: dist/
+      Handler: lambda/GetFolloweeCountLambda.handler
+      Events:
+        GetFolloweeCountApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /followee-count
+            Method: POST
+
+  GetIsFollowerStatusFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-GetIsFollowerStatus
+      CodeUri: dist/
+      Handler: lambda/GetIsFollowerStatusLambda.handler
+      Events:
+        GetIsFollowerStatusApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /is-follower
+            Method: POST
+
+
+  PostStatusFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-PostStatus
+      CodeUri: dist/
+      Handler: lambda/PostStatusLambda.handler
+      Events:
+        PostStatusApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /status
+            Method: POST
+
+  GetFeedFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-GetFeed
+      CodeUri: dist/
+      Handler: lambda/GetFeedLambda.handler
+      Events:
+        GetFeedApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /feed
+            Method: POST
+
+  GetStoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: tweeter-GetStory
+      CodeUri: dist/
+      Handler: lambda/GetStoryLambda.handler
+      Events:
+        GetStoryApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TweeterApi
+            Path: /story
+            Method: POST
+
+Outputs:
+  TweeterApiUrl:
+    Description: API Gateway endpoint URL for Prod stage
+    Value: !Sub "https://${TweeterApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+    Export:
+      Name: TweeterApiUrl
+
+  TweeterApiId:
+    Description: API Gateway ID
+    Value: !Ref TweeterApi
+    Export:
+      Name: TweeterApiId
+
+  Region:
+    Description: Deployed Region
+    Value: !Ref AWS::Region
