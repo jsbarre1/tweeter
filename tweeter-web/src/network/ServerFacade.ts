@@ -30,18 +30,12 @@ import {
 } from "tweeter-shared";
 import { ClientCommunicator } from "./ClientCommunicator";
 
-/**
- * ServerFacade provides a simple interface for the client to call backend API endpoints
- * Implements the Facade pattern to hide the complexity of network communication
- */
+
 export class ServerFacade {
   private SERVER_URL = "https://ie1aofz86k.execute-api.us-east-1.amazonaws.com/prod";
 
   private clientCommunicator = new ClientCommunicator(this.SERVER_URL);
 
-  /**
-   * Login a user
-   */
   public async login(alias: string, password: string): Promise<[User, AuthToken]> {
     const request: LoginRequest = {
       alias,
@@ -62,9 +56,7 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Register a new user
-   */
+
   public async register(
     firstName: string,
     lastName: string,
@@ -94,9 +86,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Logout a user
-   */
   public async logout(authToken: AuthToken): Promise<void> {
     const request: LogoutRequest = {
       authToken: AuthTokenDto.fromAuthToken(authToken),
@@ -112,9 +101,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Get a user by alias
-   */
   public async getUser(authToken: AuthToken, alias: string): Promise<User> {
     const request: GetUserRequest = {
       authToken: AuthTokenDto.fromAuthToken(authToken),
@@ -133,9 +119,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Get a page of followees
-   */
   public async getMoreFollowees(
     authToken: AuthToken,
     userAlias: string,
@@ -162,9 +145,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Get a page of followers
-   */
   public async getMoreFollowers(
     authToken: AuthToken,
     userAlias: string,
@@ -191,9 +171,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Follow a user
-   */
   public async follow(
     authToken: AuthToken,
     userToFollow: User
@@ -215,9 +192,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Unfollow a user
-   */
   public async unfollow(
     authToken: AuthToken,
     userToUnfollow: User
@@ -239,9 +213,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Check if user is following another user
-   */
   public async getIsFollowerStatus(
     authToken: AuthToken,
     user: User,
@@ -265,9 +236,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Get follower count for a user
-   */
   public async getFollowerCount(authToken: AuthToken, user: User): Promise<number> {
     const request: GetFollowCountRequest = {
       authToken: AuthTokenDto.fromAuthToken(authToken),
@@ -286,9 +254,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Get followee count for a user
-   */
   public async getFolloweeCount(authToken: AuthToken, user: User): Promise<number> {
     const request: GetFollowCountRequest = {
       authToken: AuthTokenDto.fromAuthToken(authToken),
@@ -307,9 +272,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Get a page of story items
-   */
   public async getMoreStoryItems(
     authToken: AuthToken,
     userAlias: string,
@@ -336,9 +298,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Get a page of feed items
-   */
   public async getMoreFeedItems(
     authToken: AuthToken,
     userAlias: string,
@@ -365,9 +324,6 @@ export class ServerFacade {
     }
   }
 
-  /**
-   * Post a status
-   */
   public async postStatus(authToken: AuthToken, newStatus: Status): Promise<void> {
     const request: PostStatusRequest = {
       authToken: AuthTokenDto.fromAuthToken(authToken),

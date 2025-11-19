@@ -1,8 +1,5 @@
 import { TweeterRequest, TweeterResponse } from "tweeter-shared";
 
-/**
- * Handles HTTP communication with the backend API
- */
 export class ClientCommunicator {
   private SERVER_URL: string;
 
@@ -38,7 +35,6 @@ export class ClientCommunicator {
       const resp: Response = await fetch(url, params);
 
       if (resp.ok) {
-        // Be careful with the return type here. resp.json() returns Promise<any> which means there is no type checking on response.
         const response: RES = await resp.json();
         return response;
       } else {
