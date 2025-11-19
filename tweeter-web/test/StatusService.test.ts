@@ -9,13 +9,9 @@ describe("StatusService Integration Tests", () => {
     statusService = new StatusService();
   });
 
-  /**
-   * Test: Load More Story Items
-   * Verifies that the StatusService can successfully retrieve a page of story items
-   */
+
   describe("loadMoreStoryItems", () => {
     it("should successfully retrieve story items", async () => {
-      // Use a dummy auth token for testing
       const authToken = new AuthToken("test-token", Date.now());
       const userAlias = "@testuser";
       const pageSize = 10;
@@ -28,11 +24,9 @@ describe("StatusService Integration Tests", () => {
         lastItem
       );
 
-      // Verify statuses are returned
       expect(statuses).toBeDefined();
       expect(Array.isArray(statuses)).toBe(true);
 
-      // Verify each status is a Status object
       statuses.forEach((status) => {
         expect(status).toBeInstanceOf(Status);
         expect(status.post).toBeDefined();
@@ -41,7 +35,6 @@ describe("StatusService Integration Tests", () => {
         expect(typeof status.timestamp).toBe("number");
       });
 
-      // Verify hasMore is a boolean
       expect(typeof hasMore).toBe("boolean");
     });
   });
