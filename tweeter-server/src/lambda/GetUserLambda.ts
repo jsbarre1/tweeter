@@ -3,7 +3,6 @@ import { UserService } from "../service/UserService";
 
 export const handler = async (event: any) => {
   try {
-    // Parse the request body from API Gateway
     const request: GetUserRequest = JSON.parse(event.body);
 
     const userService = new UserService();

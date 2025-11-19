@@ -8,7 +8,6 @@ import { FollowService } from "../service/FollowService";
 
 export const handler = async (event: any) => {
   try {
-    // Parse the request body from API Gateway
     const request: PagedUserItemRequest = JSON.parse(event.body);
 
     const followService = new FollowService();

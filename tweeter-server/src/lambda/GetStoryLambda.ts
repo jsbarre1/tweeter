@@ -8,7 +8,6 @@ import { StatusService } from "../service/StatusService";
 
 export const handler = async (event: any) => {
   try {
-    // Parse the request body from API Gateway
     const request: PagedStatusItemRequest = JSON.parse(event.body);
 
     const statusService = new StatusService();

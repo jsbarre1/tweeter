@@ -3,14 +3,11 @@ import { FollowService } from "../service/FollowService";
 
 export const handler = async (event: any) => {
   try {
-    // Parse the request body from API Gateway
     const request: UnfollowRequest = JSON.parse(event.body);
 
     const followService = new FollowService();
     const authToken = AuthTokenDto.toAuthToken(request.authToken);
 
-    // Create a user object from the alias
-    // TODO: In Milestone 4, fetch the full user from the database
     const userToUnfollow = { alias: request.userToUnfollow } as any;
 
     const [followerCount, followeeCount] = await followService.unfollow(

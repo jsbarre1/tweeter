@@ -3,14 +3,11 @@ import { FollowService } from "../service/FollowService";
 
 export const handler = async (event: any) => {
   try {
-    // Parse the request body from API Gateway
     const request: FollowRequest = JSON.parse(event.body);
 
     const followService = new FollowService();
     const authToken = AuthTokenDto.toAuthToken(request.authToken);
 
-    // Create a user object from the alias
-    // TODO: In Milestone 4, fetch the full user from the database
     const userToFollow = { alias: request.userToFollow } as any;
 
     const [followerCount, followeeCount] = await followService.follow(
